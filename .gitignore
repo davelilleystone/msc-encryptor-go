@@ -1,0 +1,20 @@
+# Go binaries
+*.exe
+*.out
+*.test
+
+# Build / bin directories
+bin/
+
+# Encrypted/Decrypted files
+*.enc
+*.bin
+*.dec
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
