@@ -10,8 +10,8 @@ import (
 	"golang.org/x/term"
 )
 
-func exitWithError(msg string, a ...any) {
-	fmt.Printf("Error: "+msg+"\n", a...)
+func exitWithError(format string, a ...any) {
+	fmt.Printf("Error: "+format+"\n", a...)
 	flag.Usage()
 	os.Exit(1)
 }
@@ -60,10 +60,11 @@ func main() {
 		log.Fatalf("Failed to read password: %v", err)
 	}
 
-	passwordStr := string(password)
-
 	if *action == "encrypt" {
-		fmt.Println("call encrypt routine")
+		err := encryptFile(*src, *dest, password)
+		if err != nil {
+			fmt.Println("Encryption failed: ", err)
+		}
 	} else if *action == "decrypt" {
 		fmt.Println("call decrypt routine")
 	} else {
