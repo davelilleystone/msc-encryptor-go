@@ -64,9 +64,14 @@ func main() {
 		err := encryptFile(*src, *dest, password)
 		if err != nil {
 			fmt.Println("Encryption failed: ", err)
+			os.Exit(1)
 		}
 	} else if *action == "decrypt" {
-		fmt.Println("call decrypt routine")
+		err := decryptFile(*src, *dest, password)
+		if err != nil {
+			fmt.Println("Encryption failed: ", err)
+			os.Exit(1)
+		}
 	} else {
 		fmt.Println("something has gone wrong")
 	}
