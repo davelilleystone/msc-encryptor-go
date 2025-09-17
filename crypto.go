@@ -9,6 +9,13 @@ import (
 	"golang.org/x/crypto/pbkdf2"
 )
 
+func createSecret(bits int) []byte {
+	secret := make([]byte, bits)
+	// Read does not return error, will purposefully crash system if error occurs
+	rand.Read(secret)
+	return secret
+}
+
 func deriveKey(password []byte, salt []byte) []byte {
 	iterations := 1200000
 	keyLength := 32 // 256 bits
@@ -17,8 +24,9 @@ func deriveKey(password []byte, salt []byte) []byte {
 }
 
 func encryptBytes(data []byte, password []byte) ([]byte, error) {
-	salt := make([]byte, 16)
-	rand.Read(salt)
+	salt := createSecret(16)
+	nonce := make([]byte, 16)
+	rand.Read(nonce)
 	key := deriveKey(password, salt)
 	fmt.Println(key)
 
