@@ -1,0 +1,5 @@
+file,size_bytes,encrypt_avg,decrypt_avg
+test_1mb.bin,1048576,0.127973,0.122847
+test_10mb.bin,10485760,0.130394,0.128889
+test_100mb.bin,104857600,0.201017,0.171110
+test_500mb.bin,524288000,0.499324,0.394481

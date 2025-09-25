@@ -11,14 +11,14 @@ import (
 	"golang.org/x/crypto/pbkdf2"
 )
 
-// randomBytes returns securely generated random bytes of the given length.
+// returns securely generated random bytes of the given length.
 func randomBytes(length int) []byte {
 	secret := make([]byte, length)
 	rand.Read(secret)
 	return secret
 }
 
-// hash user inputted password into 256bit key suitable for AES encryption
+// hash user password into 256bit key suitable for AES encryption
 func deriveKey(password []byte, salt []byte) []byte {
 	iterations := 1200000
 	keyLength := 32 // 256 bits
@@ -39,7 +39,6 @@ func encryptBytes(data []byte, password []byte) ([]byte, error) {
 		return nil, fmt.Errorf("failed to wrap cipher in GCM: %w", err)
 	}
 	ciphertext := gcm.Seal(nil, nonce, data, nil)
-
 	// append salt and nonce to ciphertext / tag
 	saltPlusNonce := append(salt, nonce...)
 	// append ciphertext to salt and nonce, we now have [salt][nonce][ciphertext + tag]
@@ -57,12 +56,10 @@ func decryptBytes(data []byte, password []byte) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cipher: %w", err)
 	}
-
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
 		return nil, fmt.Errorf("failed to wrap cipher in GCM: %w", err)
 	}
-
 	plaintext, err := aesgcm.Open(nil, nonce, ciphertext, nil)
 	if err != nil {
 		return nil, fmt.Errorf("decryption failed (wrong password or tampered file): %w", err)
@@ -74,7 +71,6 @@ func decryptBytes(data []byte, password []byte) ([]byte, error) {
 func decryptFile(src string, dest string, password []byte) error {
 
 	data, err := os.ReadFile(src)
-
 	if err != nil {
 		return fmt.Errorf("failed to read file: %v", err)
 	}

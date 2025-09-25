@@ -17,7 +17,7 @@ func exitWithError(format string, a ...any) {
 }
 
 func main() {
-	// define flag
+	// define flags
 	action := flag.String("action", "", "Select action to perform, either 'encrypt' or 'decrypt'")
 	src := flag.String("src", "", "Select source file")
 	dest := flag.String("dest", "", "Select destination file")
@@ -47,12 +47,12 @@ func main() {
 	if *dest == "" {
 		exitWithError("-dest flag is required.")
 	}
-	// success
+	// input success - print message to console
 	fmt.Println("Action:", *action)
 	fmt.Println("Source file:", *src)
 	fmt.Println("Destination file:", *dest)
 
-	// get password
+	// get user password
 	fmt.Printf("\nPlease enter password to %s %s:\n", *action, *src)
 	password, err := term.ReadPassword(int(syscall.Stdin))
 
@@ -63,17 +63,17 @@ func main() {
 	if *action == "encrypt" {
 		err := encryptFile(*src, *dest, password)
 		if err != nil {
-			fmt.Println("Encryption failed: ", err)
+			fmt.Println("encryption failed: ", err)
 			os.Exit(1)
 		}
 	} else if *action == "decrypt" {
 		err := decryptFile(*src, *dest, password)
 		if err != nil {
-			fmt.Println("Encryption failed: ", err)
+			fmt.Println("decryption failed: ", err)
 			os.Exit(1)
 		}
 	} else {
-		fmt.Println("something has gone wrong")
+		fmt.Println("Something has gone wrong...")
 	}
 
 }
